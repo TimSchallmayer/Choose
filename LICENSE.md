@@ -1,4 +1,4 @@
-Copyright (c) 2025 Tim Schallmayer
+Copyright (c) 2026 Tim Schallmayer
 
 All rights reserved.
 
