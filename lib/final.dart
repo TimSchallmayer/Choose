@@ -1,44 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'entscheidungen.dart';
-import 'dart:core';
-import 'package:ai_typing/ai_typing.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
-import 'final.dart';
+import 'home.dart';
 
-class wisdoms extends StatefulWidget {
-  const wisdoms({super.key, required this.lan});
-
+class answer extends StatefulWidget {
+  const answer({super.key, required this.lan});
   final String lan;
 
   @override
-  State<wisdoms> createState() => _wisdomsState();
+  State<answer> createState() => _answerState();
 }
 
-class _wisdomsState extends State<wisdoms> {
-  bool _buttonAktiv = false;
-  String _aktuellerText = "";
-
-  @override
-  void initState() {
-    super.initState();
-    _ladeTextMitDelay();
-  }
-
-  void _ladeTextMitDelay() {
-    var rnd = Random();
-    _aktuellerText = widget.lan == "en"
-        ? footerwisdoms_en[rnd.nextInt(footerwisdoms_en.length)]
-        : footerwisdoms[rnd.nextInt(footerwisdoms.length)];
-
-    _buttonAktiv = false;
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        _buttonAktiv = true;
-      });
-    });
-  }
-
+class _answerState extends State<answer> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -50,36 +24,41 @@ class _wisdomsState extends State<wisdoms> {
             builder: (context) {
               var rnd = Random();
               return ElevatedButton(
-                onPressed: _buttonAktiv
-                    ? () {
-                        Navigator.push(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    answer(lan: widget.lan),
-                            transitionsBuilder:
-                                (
-                                  context,
-                                  animation,
-                                  secondaryAnimation,
-                                  child,
-                                ) {
-                                  return ScaleTransition(
-                                    scale: animation,
-                                    child: child,
-                                  );
-                                },
-                            transitionDuration: Duration(milliseconds: 100),
-                          ),
-                        );
-                      }
-                    : null,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: const Duration(milliseconds: 100),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          home(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                            return Stack(
+                              children: [
+                                ScaleTransition(
+                                  scale: Tween<double>(begin: 1.0, end: 0.0)
+                                      .animate(
+                                        CurvedAnimation(
+                                          parent: secondaryAnimation,
+                                          curve: Curves.easeInOut,
+                                        ),
+                                      ),
+                                  child: const ColoredBox(
+                                    color: Colors.lightBlue,
+                                  ),
+                                ),
+                                child,
+                              ],
+                            );
+                          },
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
-                  shape: CircleBorder(),
-                  padding: EdgeInsets.all(0),
-                  backgroundColor: Colors.lightBlueAccent,
-                  elevation: 15,
+                  shape: const CircleBorder(),
+                  padding: EdgeInsets.zero,
+                  backgroundColor: Colors.lightBlue,
+                  elevation: 0,
                 ),
                 child: Container(
                   height: 180,
@@ -125,14 +104,14 @@ class _wisdomsState extends State<wisdoms> {
                       ),
                     ],
                   ),
-                  child: AiTypingText(
-                    Text(
-                      _aktuellerText,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.archivoBlack(
-                        fontSize: 30,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                  child: Text(
+                    widget.lan == "en"
+                        ? wisdoms_en[rnd.nextInt(wisdoms_en.length)]
+                        : wisdoms[rnd.nextInt(wisdoms.length)],
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.archivoBlack(
+                      fontSize: 30,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
