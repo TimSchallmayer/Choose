@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:locale_plus/locale_plus.dart';
 import 'wisdoms.dart';
+import 'settings.dart';
+import 'settings_values.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -11,23 +13,12 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  String lan = "de";
-  double scale = 1;
-
   @override
   void initState() {
-    super.initState();
-    _loadLanguage();
-    scale = 1;
-  }
-
-  Future<void> _loadLanguage() async {
-    final code = await LocalePlus().getLanguageCode();
-    if (code != null && mounted) {
-      setState(() {
-        lan = code;
-      });
+    if (lan_code == "ex") {
+      loadLanguage();
     }
+    super.initState();
   }
 
   @override
@@ -48,19 +39,35 @@ class _homeState extends State<home> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 15, right: 10),
-                  child: ElevatedButton(
-                    onPressed: null,
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Icon(Icons.settings),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      surfaceTintColor: Colors.transparent,
-                      elevation: 0,
-                    ),
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Builder(
+                    builder: (context) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (context) => settings(),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          surfaceTintColor: Colors.transparent,
+                          elevation: 0,
+                        ),
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Icon(
+                            Icons.settings,
+                            size: 40,
+                            color: Colors.black,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -81,7 +88,7 @@ class _homeState extends State<home> {
                               PageRouteBuilder(
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
-                                        wisdoms(lan: lan),
+                                        wisdoms(),
                                 transitionsBuilder:
                                     (
                                       context,
@@ -147,7 +154,9 @@ class _homeState extends State<home> {
                             child: Center(
                               child: FittedBox(
                                 child: Text(
-                                  (lan == "en" ? "Choose." : "Entscheide."),
+                                  (lan_code == "en"
+                                      ? "Choose."
+                                      : "Entscheide."),
                                   textAlign: TextAlign.center,
                                   softWrap: true,
                                   style: GoogleFonts.archivoBlack(

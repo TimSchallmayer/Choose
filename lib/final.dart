@@ -3,16 +3,24 @@ import 'entscheidungen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:math';
 import 'home.dart';
+import 'settings_values.dart';
 
 class answer extends StatefulWidget {
-  const answer({super.key, required this.lan});
-  final String lan;
+  const answer({super.key});
 
   @override
   State<answer> createState() => _answerState();
 }
 
 class _answerState extends State<answer> {
+  @override
+  void initState() {
+    if (lan_code == "ex") {
+      loadLanguage();
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -75,21 +83,18 @@ class _answerState extends State<answer> {
                       radius: 0.8,
                     ),
                     boxShadow: [
-                      // schwacher, weiter auslaufender Schatten
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.7),
                         spreadRadius: 40,
                         blurRadius: 4,
                         offset: Offset(0, 0),
                       ),
-                      // mittlerer Schatten
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.8),
                         spreadRadius: 20,
                         blurRadius: 20,
                         offset: Offset(0, 0),
                       ),
-                      // enger, intensiver Schatten direkt um den Button
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.9),
                         spreadRadius: 20,
@@ -105,7 +110,7 @@ class _answerState extends State<answer> {
                     ],
                   ),
                   child: Text(
-                    widget.lan == "en"
+                    lan_code == "en"
                         ? wisdoms_en[rnd.nextInt(wisdoms_en.length)]
                         : wisdoms[rnd.nextInt(wisdoms.length)],
                     textAlign: TextAlign.center,

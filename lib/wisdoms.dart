@@ -1,3 +1,4 @@
+import 'package:choose/settings_values.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'entscheidungen.dart';
@@ -7,9 +8,7 @@ import 'dart:math';
 import 'final.dart';
 
 class wisdoms extends StatefulWidget {
-  const wisdoms({super.key, required this.lan});
-
-  final String lan;
+  const wisdoms({super.key});
 
   @override
   State<wisdoms> createState() => _wisdomsState();
@@ -27,16 +26,22 @@ class _wisdomsState extends State<wisdoms> {
 
   void _ladeTextMitDelay() {
     var rnd = Random();
-    _aktuellerText = widget.lan == "en"
+    if (lan_code == "ex") {
+      loadLanguage();
+    }
+    _aktuellerText = lan_code == "en"
         ? footerwisdoms_en[rnd.nextInt(footerwisdoms_en.length)]
         : footerwisdoms[rnd.nextInt(footerwisdoms.length)];
 
     _buttonAktiv = false;
-    Future.delayed(Duration(seconds: 5), () {
-      setState(() {
-        _buttonAktiv = true;
-      });
-    });
+    Future.delayed(
+      Duration(seconds: (_aktuellerText.length * 0.1).toInt()),
+      () {
+        setState(() {
+          _buttonAktiv = true;
+        });
+      },
+    );
   }
 
   @override
@@ -48,7 +53,6 @@ class _wisdomsState extends State<wisdoms> {
         body: Center(
           child: Builder(
             builder: (context) {
-              var rnd = Random();
               return ElevatedButton(
                 onPressed: _buttonAktiv
                     ? () {
@@ -57,7 +61,7 @@ class _wisdomsState extends State<wisdoms> {
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    answer(lan: widget.lan),
+                                    answer(),
                             transitionsBuilder:
                                 (
                                   context,
@@ -96,21 +100,18 @@ class _wisdomsState extends State<wisdoms> {
                       radius: 0.8,
                     ),
                     boxShadow: [
-                      // schwacher, weiter auslaufender Schatten
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.7),
                         spreadRadius: 40,
                         blurRadius: 4,
                         offset: Offset(0, 0),
                       ),
-                      // mittlerer Schatten
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.8),
                         spreadRadius: 20,
                         blurRadius: 20,
                         offset: Offset(0, 0),
                       ),
-                      // enger, intensiver Schatten direkt um den Button
                       BoxShadow(
                         color: Colors.lightBlue.withOpacity(0.9),
                         spreadRadius: 20,
@@ -127,7 +128,7 @@ class _wisdomsState extends State<wisdoms> {
                   ),
                   child: AiTypingText(
                     Text(
-                      _aktuellerText,
+                      "Warnung:\n" + _aktuellerText,
                       textAlign: TextAlign.center,
                       style: GoogleFonts.archivoBlack(
                         fontSize: 30,
