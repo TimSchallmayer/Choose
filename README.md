@@ -1,16 +1,30 @@
-# choose
+# Choose
 
-A new Flutter project.
+A small and simple command-line tool for making random choices.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Choose randomly from multiple options
+* Simple command-line interface
+* Lightweight and easy to use
 
-A few resources to get you started if this is your first Flutter project:
+## Usage
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+```bash
+choose option1 option2 option3
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The program randomly selects one of the given options.
+
+## Build
+
+Clone the repository and build the project with the included build configuration.
+
+```bash
+git clone https://github.com/TimSchallmayer/Choose.git
+cd Choose
+```
+
+## License
+
+See the `LICENSE` file for license information.
